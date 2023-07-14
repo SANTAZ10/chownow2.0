@@ -9,7 +9,6 @@ import Layout from "@/components/Layout";
 import logo from "@/assets/chownow.png";
 import { AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook } from "react-icons/ai";
 
-
 export default async function Pizza({ params }) {
   const slug = params.pizza;
   const pizza = await getPizza(slug);
@@ -19,18 +18,57 @@ export default async function Pizza({ params }) {
     <div>
       <div className="hidden sm:block">
         <Layout className="hidden sm:block">
-          {/* Rest of your layout components */}
-          {/* navbar */}
+          <div className="flex gap-16 my-20 mx-8">
+            {/* left side */}
+            <div className="relative overflow-hidden h-[36rem] w-[44rem] border rounded-[2rem] ">
+              <Image
+                src={src}
+                fill={true}
+                alt={pizza.name}
+                layout="fill"
+                style={{objectFit:"cover"}}
+                className=" hover:scale-110  ease-in duration-200 cursor-pointer"
+              />
+            </div>
+            {/* right side */}
+            <div className="flex flex-col justify-between">
+              <div className="flex flex-col gap-12">
+                <span className="text-gray-800 font-bold text-4xl">{pizza.name}</span>
+                <span className="text-gray-500 text-lg">{pizza.details}</span>
+              </div>
+              <span className="text-gray-800 text-3xl font-bold">
+                {" "}
+                <span className="text-red-500 ">$</span> {pizza.price[1]}
+              </span>
+              <div className="flex flex-row gap-12 items-center justify-center">
+                <span className="text-gray-800 font-semibold text-2xl">Size</span>
+                <div className="flex gap-4">
+                  <span className="border border-red-500 bg-transparent text-red-500  py-[.3rem] px-[1.5rem] rounded-full cursor-pointer hover:bg-red-500 hover:text-white hover:duration-200 ease-in text-[.8rem]">
+                    Small
+                  </span>
+                  <span className="border border-red-500 bg-transparent text-red-500  py-[.3rem] px-[1.5rem] rounded-full cursor-pointer hover:bg-red-500 hover:text-white hover:duration-200 ease-in text-[.8rem]">
+                    Medium
+                  </span>
+                  <span className="border border-red-500 bg-transparent text-red-500  py-[.3rem] px-[1.5rem] rounded-full cursor-pointer hover:bg-red-500 hover:text-white hover:duration-200 ease-in text-[.8rem]">
+                    Large
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center gap-8 text-2xl text-gray-800 font-semibold">
+                <span>Quantity</span>
+                <div className="flex justify-center items-center gap-2 text-red-500">
+                  <BiSolidLeftArrow className="cursor-pointer"/>
+                  <span className="text-gray-800">1</span>
+                  <BiSolidRightArrow className="cursor-pointer"/>
+                </div>
+              </div>
+                <div className="bg-red-500 max-w-max text-white px-4 py-2 rounded-full cursor-pointer">Add to Cart</div>
 
-          {/* left side */}
-          <div>
-            <Image src={src} height={200} width={200} />
+            </div>
           </div>
-          {/* right side */}
-          <div></div>
         </Layout>
       </div>
-{/* MOBILE SCREEN ONLY   */}
+      {/* MOBILE SCREEN ONLY   */}
       <div className="sm:hidden flex flex-col">
         {/* navbar */}
         <div className="m-8 flex justify-between items-center text-gray-800">
@@ -47,7 +85,14 @@ export default async function Pizza({ params }) {
         </div>
         {/* left side */}
         <div className="relative flex justify-center items-center h-[18rem] w-[18rem] mx-auto overflow-hidden">
-          <Image src={src} fill={true} alt={pizza.name} layout="fill" objectFit="cover" className="border rounded-[1rem]" />
+          <Image
+            src={src}
+            fill={true}
+            alt={pizza.name}
+            layout="fill"
+            style={{objectFit:"cover"}}
+            className="border rounded-[1rem]"
+          />
         </div>
         {/* right side */}
         <div className="flex flex-col m-4 gap-8 h-full">
@@ -57,13 +102,13 @@ export default async function Pizza({ params }) {
             <span className="text-gray-500 text-sm">{pizza.details}</span>
           </div>
           <div className="flex flex-row gap-6  items-center justify-center">
-            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full">
+            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full text-[.8rem]">
               Small
             </span>
-            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full">
+            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full text-[.8rem]">
               Medium
             </span>
-            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full">
+            <span className="border border-red-500 bg-transparent text-red-500  py-2 px-4 rounded-full text-[.8rem]">
               Large
             </span>
           </div>

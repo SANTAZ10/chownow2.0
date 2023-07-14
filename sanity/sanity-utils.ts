@@ -8,6 +8,7 @@ const urlFor = (source: string) => {
     projectId: "2r1izu8i",
     dataset: "production",
     apiVersion: "2023-07-08",
+    useCdn: true
   });
 
   const builder = imageUrlBuilder(client);
