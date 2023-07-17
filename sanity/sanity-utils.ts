@@ -15,7 +15,7 @@ const urlFor = (source: string) => {
   return builder.image(source);
 };
 
-export async function getPizzas(): Promise<Pizza[]> {
+export  function getPizzas(): Promise<Pizza[]> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "pizza"]{
       _id,
@@ -29,7 +29,7 @@ export async function getPizzas(): Promise<Pizza[]> {
   );
 }
 
-export async function getPizza(slug: string): Promise<Pizza> {
+export function getPizza(slug: string): Promise<Pizza> {
   return createClient(clientConfig).fetch(
     groq`*[_type == "pizza" && slug.current == $slug][0]{
       _id,

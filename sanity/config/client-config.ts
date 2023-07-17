@@ -1,5 +1,3 @@
-import { truncate } from "fs";
-
 const config = {
   projectId: "2r1izu8i",
   dataset: "production",
