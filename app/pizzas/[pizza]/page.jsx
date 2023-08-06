@@ -1,6 +1,5 @@
 "use client";
 
-import { getPizza } from "@/sanity/sanity-utils";
 import { urlFor } from "@/sanity/sanity-utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,14 +10,24 @@ import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
 import Layout from "@/components/Layout";
 import logo from "@/assets/chownow.png";
 import { AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook } from "react-icons/ai";
+import { getPizza } from "@/sanity/sanity-utils";
+import { useStore } from "@/store/store";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Pizza({ params }) {
   const slug = params.pizza;
+  const items = useStore((state) => state.cart.pizzas.length)
   const [pizza, setPizza] = useState(null);
   const [src, setSrc] = useState(null);
   const [size, setSize] = useState(1);
   const [quantity, setQuantity] = useState(1);
   const [mobileQuantity, setMobileQuantity] = useState(1);
+
+  const addPizza = useStore((state) => state.addPizza);
+  const addToCart = () => {
+    addPizza({ ...pizza, price: pizza.price[size], quantity: quantity, mobileQuantity: mobileQuantity, size: size });
+    toast.success("Added to Cart");
+  };
 
   const handleQuantity = (type) => {
     type === "inc"
@@ -34,6 +43,8 @@ export default function Pizza({ params }) {
       ? null
       : setMobileQuantity((prev) => prev - 1);
   };
+
+  
   useEffect(() => {
     getPizza(slug)
       .then((pizzaData) => {
@@ -46,12 +57,10 @@ export default function Pizza({ params }) {
       });
   }, [slug]);
 
-  // Wait for the pizza data to be fetched before rendering
   if (!pizza) {
-    return <></>;
+    return null;
   }
 
-  // Now you can safely access the properties of 'pizza'
   return (
     <div>
       <div className="hidden sm:block">
@@ -127,10 +136,14 @@ export default function Pizza({ params }) {
                   />
                 </div>
               </div>
-              <div className="bg-red-500 max-w-max text-white px-4 py-2 rounded-full cursor-pointer">
+              <div
+                onClick={addToCart}
+                className="bg-red-500 max-w-max text-white px-4 py-2 rounded-full cursor-pointer"
+              >
                 Add to Cart
               </div>
             </div>
+            
           </div>
         </Layout>
       </div>
@@ -138,14 +151,14 @@ export default function Pizza({ params }) {
       <div className="sm:hidden flex flex-col">
         {/* navbar */}
         <div className="m-8 flex justify-between items-center text-gray-800">
-          <Link href="/">
+          <Link href='/'>
             <IoMdArrowBack size={30} className="cursor-pointer" />
           </Link>
 
-          <Link href="/" className="flex self-end relative cursor-pointer">
+          <Link href={`/cart`} className="flex self-end relative cursor-pointer">
             <AiOutlineShoppingCart size={40} className="text-gray-800" />
             <span className="absolute top-[-.4rem] right-[-.2rem] px-[.25rem] py-[.1rem] bg-red-500 rounded-full">
-              0
+            {items}
             </span>
           </Link>
         </div>
@@ -212,8 +225,11 @@ export default function Pizza({ params }) {
             </div>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-red-500 text-white mb-8  py-4 px-8 rounded-full">Add to Cart</div>
+            <div onClick={addToCart} className="bg-red-500 text-white mb-8  py-4 px-8 rounded-full">
+              Add to Cart
+            </div>
           </div>
+          
           <div className=" flex flex-col gap-8 mb-10 items-center justify-center">
             <div>
               <span className="text-lg text-red-500  font-bold">ALL RIGHTS RESERVED</span>
@@ -232,6 +248,7 @@ export default function Pizza({ params }) {
           </div>
         </div>
       </div>
+      <Toaster/>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Image from "next/image";
 import logo from "@/assets/chownow.png";
 import { useState } from "react";
 import { AiOutlineMenu, AiOutlineClose, AiOutlineShoppingCart } from "react-icons/ai";
+import {useStore} from '@/store/store'
 
 export default function Header() {
   const [nav, setNav] = useState(false);
@@ -12,6 +13,9 @@ export default function Header() {
   const handleNav = () => {
     setNav(!nav);
   };
+
+  const items = useStore((state) => state.cart.pizzas.length)
+
   return (
     <div className="w-full">
       <div className=" m-auto flex justify-between items-center p-4 text-white">
@@ -40,12 +44,12 @@ export default function Header() {
           </li>
         </ul>
         <div className="flex gap-4">
-          <div className="flex self-end relative cursor-pointer">
+          <Link href={`/cart`} className="flex self-end relative cursor-pointer">
           <AiOutlineShoppingCart size={40} className="text-gray-800" />
           <span className="absolute top-[-.4rem] right-[-.2rem] px-[.25rem] py-[.1rem] bg-red-500 rounded-full">
-            0
+            {items}
           </span>
-        </div>
+        </Link>
 
         {/* mobile menu button */}
         <div onClick={handleNav} className=" flex items-center justify-center sm:hidden z-50">
