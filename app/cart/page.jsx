@@ -82,27 +82,33 @@ export default function Cart() {
             {total()}
           </span>
         </div>
-        <div className="flex justify-center gap-2 items-center mt-8 flex-col">
-          <Link
-            href="/"
-            className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
-          >
-            Pay Online
-          </Link>
-          <Link
-            href="/"
-            className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
-          >
-            Pay on Delvery
-          </Link>
+        {cartData.pizzas.length > 0 ? (
+          <div className="flex justify-center gap-2 items-center mt-8 flex-col">
+            <Link
+              href="/"
+              className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
+            >
+              Pay Online
+            </Link>
+            <Link
+              href="/"
+              className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
+            >
+              Pay on Delvery
+            </Link>
+          </div>
+        ) : 
+        <div className="text-center flex justify-center items-center w-full h-[22rem] text-2xl text-gray-800 font-normal">
+          Your Cart is Empty 
         </div>
+        }
       </div>
       {/* mobile screen */}
       <div className="hidden sm:block">
         <Layout className="hidden sm:block">
-          <div className="p-8 grid grid-cols-[2.2fr,1fr]">
+          <div className="p-8 grid grid-cols-[2.2fr,1fr] mb-[10rem]">
             <div>
-              <table>
+              <table className=" w-[100%] border-separate border-spacing-4">
                 <thead>
                   <tr>
                     <th>Pizza</th>
@@ -119,7 +125,7 @@ export default function Cart() {
                     cartData.pizzas.map((pizza, i) => {
                       const src = urlFor(pizza.image).url();
                       return (
-                        <tr key={i}>
+                        <tr className="text-center" key={i}>
                           <td>
                             <Image
                               loader={() => src}
@@ -128,9 +134,10 @@ export default function Cart() {
                               objectFit="cover"
                               width={85}
                               height={85}
+                              className="rounded-2xl"
                             />
                           </td>
-                          <td>{pizza.name}</td>
+                          <td className="w-[15%]">{pizza.name}</td>
                           <td>
                             {pizza.size === 0 ? "Small" : pizza.size === 1 ? "Medium" : "Large"}
                           </td>
@@ -150,22 +157,26 @@ export default function Cart() {
               </table>
             </div>
             {/* cart summary */}
-            <div>
-              <span>Cart</span>
-              <div>
-                <div>
+            <div className=" flex flex-col items-center justify-between h-[22rem] p-[1.6rem] rounded-2xl bg-gray-400 shadow-xl shadow-gray-800/40">
+              <span className="font-bold text-2xl">Cart</span>
+              <div className="w-[100%] flex flex-col gap-[0.6rem]">
+                <div className=" flex justify-between">
                   <span>Items</span>
                   <span>{cartData.pizzas.length}</span>
                 </div>
-                <div>
+                <div className=" flex justify-between">
                   <span>Total</span>
                   <span>$ {total()}</span>
                 </div>
               </div>
               {cartData.pizzas.length > 0 ? (
-                <div>
-                  <button className="btn">Pay on Delivery</button>
-                  <button className="btn">Pay Online</button>
+                <div className="text-[0.8rem] p-[.8rem] flex gap-4">
+                  <button className="bg-red-500 text-white mx-auto py-2 w-[8rem] rounded-full text-center">
+                    Pay on Delivery
+                  </button>
+                  <button className="bg-red-500 text-white mx-auto py-2 w-[8rem] rounded-full text-center">
+                    Pay Online
+                  </button>
                 </div>
               ) : null}
             </div>

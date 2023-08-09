@@ -8,7 +8,7 @@ import Services from '@/components/Services'
 export default function Home() {
   return (
     <Layout>
-      <main className=" min-h-screen">
+      <main>
       <Hero/>
       <Services/>
       <Menu/>
