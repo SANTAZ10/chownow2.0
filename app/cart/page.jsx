@@ -5,6 +5,7 @@ import { useStore } from "@/store/store";
 import Image from "next/image";
 import Layout from "@/components/Layout";
 import Link from "next/link";
+import OrderModal from "@/components/OrderModal"
 import { useState, useEffect } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
@@ -13,12 +14,17 @@ import toast, { Toaster } from "react-hot-toast";
 export default function Cart() {
   const cartData = useStore((state) => state.cart);
   const removePizza = useStore((state) => state.removePizza);
+  const [paymentMethod, setPaymentMethod] = useState(null)
   const handleRemove = (i) => {
     removePizza(i);
     toast.error("Item Removed");
   };
   const total = () => cartData.pizzas.reduce((a, b) => a + b.quantity * b.price, 0);
 
+  const handleOnDelivery = () => {
+    setPaymentMethod(0);
+    typeof window !== 'undefined' && localStorage.setItem('total', total());
+  }
   return (
     <div>
       <div className="sm:hidden flex flex-col m-8">
@@ -84,18 +90,19 @@ export default function Cart() {
         </div>
         {cartData.pizzas.length > 0 ? (
           <div className="flex justify-center gap-2 items-center mt-8 flex-col">
-            <Link
-              href="/"
+            <button
+              
               className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
             >
               Pay Online
-            </Link>
-            <Link
-              href="/"
+            </button>
+            <button
+              
+              onClick={handleOnDelivery}
               className="bg-red-500 text-white mx-auto py-4 w-[12rem] rounded-full text-center"
             >
               Pay on Delvery
-            </Link>
+            </button>
           </div>
         ) : 
         <div className="text-center flex justify-center items-center w-full h-[22rem] text-2xl text-gray-800 font-normal">
@@ -103,7 +110,7 @@ export default function Cart() {
         </div>
         }
       </div>
-      {/* mobile screen */}
+      {/* non mobile screen */}
       <div className="hidden sm:block">
         <Layout className="hidden sm:block">
           <div className="p-8 grid grid-cols-[2.2fr,1fr] mb-[10rem]">
@@ -170,7 +177,7 @@ export default function Cart() {
                 </div>
               </div>
               {cartData.pizzas.length > 0 ? (
-                <div className="text-[0.8rem] p-[.8rem] flex gap-4">
+                <div onClick={handleOnDelivery} className="text-[0.8rem] p-[.8rem] flex gap-4">
                   <button className="bg-red-500 text-white mx-auto py-2 w-[8rem] rounded-full text-center">
                     Pay on Delivery
                   </button>
@@ -184,6 +191,11 @@ export default function Cart() {
         </Layout>
       </div>
       <Toaster />
+      <OrderModal
+        opened={paymentMethod === 0}
+        setOpened={setPaymentMethod}
+        paymentMethod={paymentMethod}
+      />
     </div>
   );
 }
